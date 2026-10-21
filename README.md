@@ -19,9 +19,7 @@ addresses can sign in, using a magic link sent by email (no passwords, no Google
 ```
 src/
   auth.ts                     Auth.js setup: Resend magic links, MongoDB sessions, @gofai.site rule
-  proxy.ts.disabled           Redirects visitors without a session cookie to /login. Disabled:
-                              Netlify cannot bundle it from Windows; rename to proxy.ts when
-                              deploying from Linux (e.g. Netlify CI). Pages still check auth.
+  proxy.ts                    Sends visitors without a session cookie to /login
   lib/
     allowed-email.ts          The domain rule (ALLOWED_EMAIL_DOMAINS, default gofai.site)
     current-user.ts           getCurrentUser(): the server-side session check every page uses
@@ -66,3 +64,9 @@ as Trigger.dev tasks in `src/trigger`. See `src/trigger/README.md`.
 | `npm run typecheck` / `npm run lint` | Type and lint checks |
 | `npm run dev:trigger` | Run Trigger.dev tasks locally |
 | `npm run deploy:trigger` | Deploy Trigger.dev tasks |
+
+## Deploying
+
+Netlify (site `gofai-dashboard`, https://app.gofai.site) builds and deploys every push to `main`
+from GitHub. Don't deploy from Windows with `netlify deploy`: Netlify's Next.js plugin can't
+bundle `src/proxy.ts` there.
