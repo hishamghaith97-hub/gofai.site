@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* GOF.ai brand: midnight navy with gold hairlines, matching the marketing site. */
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-fraunces);
+  --font-serif: var(--font-cormorant);
+  --font-mono: var(--font-jetbrains);
+
+  --color-night: #060b18;
+  --color-deep: #0a1226;
+  --color-panel: #0e1830;
+  --color-raised: #13203d;
+  --color-line: #1c2846;
+  --color-line-strong: #2a3a5f;
+  --color-gold: #c6a15b;
+  --color-gold-light: #e2cb98;
+  --color-gold-dark: #8e6d2f;
+  --color-cream: #f3eee3;
+  --color-mist: #9aa2b6;
+  --color-faint: #5f6884;
+  --color-sage: #84bf9f;
+  --color-copper: #d9925b;
+  --color-rose: #e07a73;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-night text-cream;
+  background-image:
+    radial-gradient(60rem 40rem at 85% -10%, rgb(198 161 91 / 0.07), transparent 60%),
+    radial-gradient(50rem 40rem at -10% 110%, rgb(62 92 153 / 0.12), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgb(198 161 91 / 0.35);
+  color: var(--color-cream);
+}
+
+/* Film grain over everything; pointer-events off so it never blocks clicks. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Staggered entrance: add .rise and set --i on each element (0, 1, 2…). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.rise {
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Slow orbit used by empty states and the sign-in panel. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit {
+  animation: orbit 28s linear infinite;
+}
+
+.orbit-reverse {
+  animation: orbit 40s linear infinite reverse;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+.breathe {
+  animation: breathe 2.6s ease-in-out infinite;
+}
+
+/* A gold hairline that fades out at both ends. */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(198 161 91 / 0.45), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .orbit,
+  .orbit-reverse,
+  .breathe {
+    animation: none;
+  }
+}
